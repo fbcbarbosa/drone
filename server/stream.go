@@ -79,6 +79,7 @@ func EventStreamSSE(c *gin.Context) {
 
 	go func() {
 		// TODO remove this from global config
+		logrus.Debugf("user feed: subscribing")
 		Config.Services.Pubsub.Subscribe(c, "topic/events", func(m pubsub.Message) {
 			name := m.Labels["repo"]
 			priv := m.Labels["private"]
@@ -91,6 +92,7 @@ func EventStreamSSE(c *gin.Context) {
 				}
 			}
 		})
+		logrus.Debugf("user feed: context canceled")
 		cancel()
 	}()
 
